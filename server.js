@@ -5,11 +5,25 @@ require('dotenv').config();
 
 const app = express();
 
-// Middleware - Allow CORS from all origins
+// Middleware - Allow CORS from Netlify and other origins
+const allowedOrigins = [
+  'https://celebrated-puppy-9f63aa.netlify.app',
+  'http://localhost:3000',
+  'http://localhost:5000',
+  '*'
+];
+
 app.use(cors({
-  origin: '*',
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin) || origin.includes('localhost')) {
+      callback(null, true);
+    } else {
+      callback(null, true); // Allow all for now
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  credentials: true
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
 
