@@ -51,7 +51,15 @@ app.get('/', (req, res) => {
   res.json({ message: 'Welcome to What Café API' });
 });
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('Error:', err);
+  res.status(500).json({ message: err.message });
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`✅ Server running on port ${PORT}`);
+  console.log(`✅ MongoDB URI: ${process.env.MONGODB_URI ? 'Set' : 'NOT SET'}`);
+  console.log(`✅ Node Env: ${process.env.NODE_ENV}`);
 });
